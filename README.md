@@ -1,6 +1,6 @@
 # face-toolbox-keras
 
-A collection of deep learning models ported to Keras for face analysis 
+A collection of deep learning frameworks for face analysis ported to Keras. 
 
 ![](https://github.com/shaoanlu/face-toolbox-keras/raw/master/examples.jpg)
 
@@ -10,9 +10,6 @@ A collection of deep learning models ported to Keras for face analysis
  A Colab demo is can be found here. [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaoanlu/face-toolbox-keras/blob/master/demo.ipynb)
 
 ### Face detection
-
-The S3FD model for face detection is ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment)
-
 ```python
 from models.detector import face_detector
 
@@ -23,7 +20,7 @@ bboxes = fd.detect_face(im, with_landmarks=False)
 
 ### Face landmarks detection
 
-The FAN-4 model for landmarks detection is ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment). Lite FAN such as FAN-1 and FAN-2 are also provided.
+The default model is FAN-4, lite models of FAN-1 and FAN-2 are also provided.
 
 ```python
 from models.detector import face_detector
@@ -34,9 +31,6 @@ bboxes, landmarks = fd.detect_face(im, with_landmarks=True)
 ```
 
 ### Face parsing
-
-The BiSeNet model for face parsing is ported from [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch)
-
 ```python
 from models.parser import face_parser
 
@@ -48,7 +42,7 @@ parsing_map = prs.parse_face(im)
 
 ### Eye region landmarks detection
 
-The ELG model for eye region landmarks detection is ported from [swook/GazeML](https://github.com/swook/GazeML)
+Faster face detection using MTCNN can be found in [this](https://github.com/shaoanlu/GazeML-keras) repo.
 
 ```python
 from models.detector.iris_detector import IrisDetector
@@ -60,9 +54,6 @@ eye_lms = idet.detect_iris(im)
 ```
 
 ### Face verification
-
-The InceptionResNetV1 model (model name: 20180402-114759 trained on VGGFace2) for face verification is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet)
-
 ```python
 from models.verifier.face_verifier import FaceVerifier
 
@@ -76,3 +67,10 @@ result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, retu
 ## Requirements
 - Keras 2.2.4
 - TensorFlow 1.12.0 or 1.13.1
+
+## Acknowledgments
+- The S3FD model for face detection is ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment).
+- The FAN-4 model for landmarks detection is ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment).
+- The BiSeNet model for face parsing is ported from [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch).
+- The ELG model for eye region landmarks detection is ported from [swook/GazeML](https://github.com/swook/GazeML). 
+- The InceptionResNetV1 model (model name: 20180402-114759 trained on VGGFace2) for face verification is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
