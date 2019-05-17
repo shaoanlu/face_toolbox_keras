@@ -45,21 +45,21 @@ parsing_map = prs.parse_face(im)
 Faster face detection using MTCNN can be found in [this](https://github.com/shaoanlu/GazeML-keras) repo.
 
 ```python
-from models.detector.iris_detector import IrisDetector
+from models.detector impoort iris_detector
 
 im = cv2.imread(PATH_TO_IMAGE)[..., ::-1]
-idet = IrisDetector()
+idet = iris_detector.IrisDetector()
 idet.set_detector(fd)
 eye_lms = idet.detect_iris(im)
 ```
 
 ### 5. Face verification
 ```python
-from models.verifier.face_verifier import FaceVerifier
+from models.verifier import face_verifier
 
 im1 = cv2.imread(PATH_TO_IMAGE1)[..., ::-1]
 im2 = cv2.imread(PATH_TO_IMAGE2)[..., ::-1]
-fv = FaceVerifier(classes=512)
+fv = face_verifier.FaceVerifier(classes=512)
 # fv.set_detector(fd)
 result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, return_distance=True)
 ```
