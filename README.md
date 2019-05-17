@@ -7,9 +7,9 @@ A collection of deep learning frameworks for face analysis ported to Keras.
 ---
 ## Usage
 
- A Colab demo is can be found here. [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaoanlu/face-toolbox-keras/blob/master/demo.ipynb)
+ [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaoanlu/face-toolbox-keras/blob/master/demo.ipynb)
 
-### Face detection
+### 1. Face detection
 ```python
 from models.detector import face_detector
 
@@ -18,9 +18,9 @@ fd = face_detector.FaceAlignmentDetector()
 bboxes = fd.detect_face(im, with_landmarks=False)
 ```
 
-### Face landmarks detection
+### 2. Face landmarks detection
 
-The default model is FAN-4, lite models of FAN-1 and FAN-2 are also provided.
+The default model is FAN-4 Lite models of FAN-1 and FAN-2 are also provided.
 
 ```python
 from models.detector import face_detector
@@ -30,7 +30,7 @@ fd = face_detector.FaceAlignmentDetector()
 bboxes, landmarks = fd.detect_face(im, with_landmarks=True)
 ```
 
-### Face parsing
+### 3. Face parsing
 ```python
 from models.parser import face_parser
 
@@ -40,7 +40,7 @@ prs = face_parser.FaceParser()
 parsing_map = prs.parse_face(im)
 ```
 
-### Eye region landmarks detection
+### 4. Eye region landmarks detection
 
 Faster face detection using MTCNN can be found in [this](https://github.com/shaoanlu/GazeML-keras) repo.
 
@@ -53,7 +53,7 @@ idet.set_detector(fd)
 eye_lms = idet.detect_iris(im)
 ```
 
-### Face verification
+### 5. Face verification
 ```python
 from models.verifier.face_verifier import FaceVerifier
 
