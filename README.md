@@ -20,7 +20,7 @@ bboxes = fd.detect_face(im, with_landmarks=False)
 
 ### 2. Face landmarks detection
 
-The default model is FAN-4 Lite models of FAN-1 and FAN-2 are also provided.
+The default model is FAN-4. Lite models of FAN-1 and FAN-2 are also provided.
 
 ```python
 from models.detector import face_detector
