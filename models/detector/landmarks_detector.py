@@ -4,6 +4,7 @@ Code modified from https://github.com/1adrianb/face-alignment
 import cv2
 import numpy as np
 from keras.models import load_model
+import tensorflow as tf
 
 class BaseLandmarksDetector():
     def __init__(self):
@@ -14,10 +15,9 @@ class BaseLandmarksDetector():
 
 class FANLandmarksDetector(BaseLandmarksDetector):
     def __init__(self, path_to_weights_file="./models/detector/FAN/2DFAN-4_keras.h5"):
-        try:
+        if not tf.__version__ >= '1.13':
             self.net = load_model(path_to_weights_file)
-        except:
-            import tensorflow as tf
+        else:
             self.net = tf.keras.models.load_model(path_to_weights_file)
 
     def detect_landmarks(self, image, bounding_box=None, face_detector=None):
