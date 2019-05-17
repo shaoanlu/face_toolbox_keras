@@ -2,7 +2,7 @@
 
 A collection of deep learning models ported to Keras for face analysis 
 
-![]()
+![](https://github.com/shaoanlu/face-toolbox-keras/raw/master/examples.jpg)
 
 ---
 ## Usage
@@ -72,4 +72,3 @@ fv = FaceVerifier(classes=512)
 # fv.set_detector(fd)
 result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, return_distance=True)
 ```
-d
