@@ -7,7 +7,7 @@ A collection of deep learning models ported to Keras for face analysis
 ---
 ## Usage
 
-A jupyter notebook demo on Colab is provided.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaoanlu/face-toolbox-keras/blob/master/demo.ipynb) A Colab jupyter demo is provided.
 
 ### Face detection
 
@@ -16,7 +16,7 @@ The S3FD model for face detection is ported from [1adrianb/face-alignment](https
 ```python
 from models.detector import face_detector
 
-im = cv2.imread(...)[..., ::-1]
+im = cv2.imread(PATH_TO_IMAGE)[..., ::-1]
 fd = face_detector.FaceAlignmentDetector()
 bboxes = fd.detect_face(im, with_landmarks=False)
 ```
@@ -28,7 +28,7 @@ The FAN-4 model for landmarks detection is ported from [1adrianb/face-alignment]
 ```python
 from models.detector import face_detector
 
-im = cv2.imread(...)[..., ::-1]
+im = cv2.imread(PATH_TO_IMAGE)[..., ::-1]
 fd = face_detector.FaceAlignmentDetector()
 bboxes, landmarks = fd.detect_face(im, with_landmarks=True)
 ```
@@ -40,7 +40,7 @@ The BiSeNet model for face parsing is ported from [zllrunning/face-parsing.PyTor
 ```python
 from models.parser import face_parser
 
-im = cv2.imread(...)[..., ::-1]
+im = cv2.imread(PATH_TO_IMAGE)[..., ::-1]
 prs = face_parser.FaceParser()
 # prs.set_detector(fd)
 parsing_map = prs.parse_face(im)
@@ -53,7 +53,7 @@ The ELG model for eye region landmarks detection is ported from [swook/GazeML](h
 ```python
 from models.detector.iris_detector import IrisDetector
 
-im = cv2.imread(...)[..., ::-1]
+im = cv2.imread(PATH_TO_IMAGE)[..., ::-1]
 idet = IrisDetector()
 idet.set_detector(fd)
 eye_lms = idet.detect_iris(im)
@@ -66,8 +66,8 @@ The InceptionResNetV1 model (model name: 20180402-114759 trained on VGGFace2) fo
 ```python
 from models.verifier.face_verifier import FaceVerifier
 
-im1 = cv2.imread(...)[..., ::-1]
-im2 = cv2.imread(...)[..., ::-1]
+im1 = cv2.imread(PATH_TO_IMAGE1)[..., ::-1]
+im2 = cv2.imread(PATH_TO_IMAGE2)[..., ::-1]
 fv = FaceVerifier(classes=512)
 # fv.set_detector(fd)
 result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, return_distance=True)
