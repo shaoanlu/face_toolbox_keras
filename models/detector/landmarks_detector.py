@@ -14,7 +14,11 @@ class BaseLandmarksDetector():
 
 class FANLandmarksDetector(BaseLandmarksDetector):
     def __init__(self, path_to_weights_file="./models/detector/FAN/2DFAN-4_keras.h5"):
-        self.net = load_model(path_to_weights_file)
+        try:
+            self.net = load_model(path_to_weights_file)
+        except:
+            import tensorflow as tf
+            self.net = tf.keras.models.load_model(path_to_weights_file)
 
     def detect_landmarks(self, image, bounding_box=None, face_detector=None):
         if (bounding_box is None) and (face_detector is None):
