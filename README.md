@@ -7,7 +7,7 @@ A collection of deep learning models ported to Keras for face analysis
 ---
 ## Usage
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaoanlu/face-toolbox-keras/blob/master/demo.ipynb) A Colab jupyter demo is provided.
+ A Colab demo is can be found here. [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaoanlu/face-toolbox-keras/blob/master/demo.ipynb)
 
 ### Face detection
 
@@ -72,3 +72,7 @@ fv = FaceVerifier(classes=512)
 # fv.set_detector(fd)
 result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, return_distance=True)
 ```
+
+## Requirements
+- Keras 2.2.4
+- TensorFlow 1.12.0 or 1.13.1
