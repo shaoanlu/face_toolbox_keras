@@ -35,9 +35,9 @@ bboxes, landmarks = fd.detect_face(im, with_landmarks=True)
 from models.parser import face_parser
 
 im = cv2.imread(PATH_TO_IMAGE)[..., ::-1]
-prs = face_parser.FaceParser()
-# prs.set_detector(fd) # fd = face_detector.FaceAlignmentDetector()
-parsing_map = prs.parse_face(im)
+fp = face_parser.FaceParser()
+# fp.set_detector(fd) # fd = face_detector.FaceAlignmentDetector()
+parsing_map = fp.parse_face(im, bounding_box=None)
 ```
 
 ### 4. Eye region landmarks detection
@@ -50,7 +50,7 @@ from models.detector impoort iris_detector
 im = cv2.imread(PATH_TO_IMAGE)[..., ::-1]
 idet = iris_detector.IrisDetector()
 idet.set_detector(fd) # fd = face_detector.FaceAlignmentDetector()
-eye_lms = idet.detect_iris(im)
+eye_landmarks = idet.detect_iris(im)
 ```
 
 ### 5. Face verification
