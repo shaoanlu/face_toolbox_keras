@@ -45,7 +45,7 @@ parsing_map = fp.parse_face(im, bounding_box=None)
 Faster face detection using MTCNN can be found in [this](https://github.com/shaoanlu/GazeML-keras) repo.
 
 ```python
-from models.detector impoort iris_detector
+from models.detector import iris_detector
 
 im = cv2.imread(PATH_TO_IMAGE)[..., ::-1]
 idet = iris_detector.IrisDetector()
