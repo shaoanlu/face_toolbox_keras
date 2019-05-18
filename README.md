@@ -22,6 +22,10 @@ bboxes = fd.detect_face(im, with_landmarks=False)
 
 The default model is FAN-4. Lite models of FAN-1 and FAN-2 are also provided.
 
+| GPU | 2DFAN-1 | 2DFAN-2 | 2DFAN-4 |
+|:---:|:-------:|:-------:|:-------:|
+| K80 | 74.3ms  | 92.2ms  | 133ms   |
+
 ```python
 from models.detector import face_detector
 
