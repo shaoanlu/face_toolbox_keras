@@ -1,10 +1,19 @@
 # face-toolbox-keras
 
-A collection of deep learning frameworks for face analysis ported to Keras. 
+A collection of deep learning frameworks ported to Keras for face detection, face segmentation, face parsing, iris detection, and face verification. 
 
 ![](https://github.com/shaoanlu/face-toolbox-keras/raw/master/examples.jpg)
 
----
+## Descriptions
+
+This repository contains deep learning frameworks that we collected and ported to Keras. We wrapped those models into separate modules that aim to provide their functionality to users within 3 lines of code.
+
+- **Face detection:** The S3FD model is ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment).
+- **Face landmarks detection:** The 2DFAN-4, 2DFAN-2, and 2DFAN-1 models are ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment).
+- **Face parsing:** The BiSeNet model is ported from [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch).
+- **Eye region landmarks detection:** The ELG model is ported from [swook/GazeML](https://github.com/swook/GazeML). 
+- **Face verification:** The InceptionResNetV1 model (model name: 20180402-114759) is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
+
 ## Usage
 
  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaoanlu/face-toolbox-keras/blob/master/demo.ipynb)
@@ -20,7 +29,7 @@ bboxes = fd.detect_face(im, with_landmarks=False)
 
 ### 2. Face landmarks detection
 
-The default model is FAN-4. Lite models of FAN-1 and FAN-2 are also provided.
+The default model is 2DFAN-4. Lite models of 2DFAN-1 and 2DFAN-2 are also provided.
 
 | GPU | 2DFAN-1 | 2DFAN-2 | 2DFAN-4 |
 |:---:|:-------:|:-------:|:-------:|
@@ -73,8 +82,4 @@ result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, retu
 - TensorFlow 1.12.0 or 1.13.1
 
 ## Acknowledgments
-- The S3FD model for face detection is ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment).
-- The FAN-4 model for landmarks detection is ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment).
-- The BiSeNet model for face parsing is ported from [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch).
-- The ELG model for eye region landmarks detection is ported from [swook/GazeML](https://github.com/swook/GazeML). 
-- The InceptionResNetV1 model (model name: 20180402-114759 trained on VGGFace2) for face verification is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
+We learnt a lot from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment), [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch), [swook/GazeML](https://github.com/swook/GazeML), and [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
