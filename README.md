@@ -41,7 +41,7 @@ from models.parser import face_parser
 im = cv2.imread(PATH_TO_IMAGE)[..., ::-1]
 fp = face_parser.FaceParser()
 # fp.set_detector(fd) # fd = face_detector.FaceAlignmentDetector()
-parsing_map = fp.parse_face(im, bounding_box=None)
+parsing_map = fp.parse_face(im, bounding_box=None, with_detection=False)
 ```
 
 ### 4. Eye region landmarks detection
