@@ -21,12 +21,17 @@ class FaceParser():
     def remove_detector(self):
         self.detector = None
     
-    def parse_face(self, im, bounding_box=None):
+    def parse_face(self, im, bounding_box=None, with_detection=False):
         orig_h, orig_w = im.shape[:2]
         
         # Detect/Crop face RoI
         if bounding_box == None:
-            if self.detector != None:
+            if with_detection:
+                try:
+                    self.detector.fd
+                except:
+                    raise NameError("Error occurs during face detection: \
+                    detector not found in FaceParser.")
                 bboxes = self.detector.fd.detect_face(im)
                 faces = []
                 for bbox in bboxes:
@@ -39,7 +44,6 @@ class FaceParser():
                 faces = [im]
         else:
             x0, y0, x1, y1 = bounding_box
-            x0, y0, x1, y1 = bbox
             x0, y0 = np.maximum(x0, 0), np.maximum(y0, 0)
             x1, y1 = np.minimum(x1, orig_h), np.minimum(y1, orig_w)
             x0, y0, x1, y1 = map(np.int32, [x0, y0, x1, y1])
