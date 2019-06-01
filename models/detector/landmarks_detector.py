@@ -3,8 +3,11 @@ Code modified from https://github.com/1adrianb/face-alignment
 """
 import cv2
 import numpy as np
-from keras.models import load_model
 import tensorflow as tf
+from keras.models import load_model
+from pathlib import Path
+
+FILE_PATH = str(Path(__file__).parent.resolve())
 
 class BaseLandmarksDetector():
     def __init__(self):
@@ -14,7 +17,7 @@ class BaseLandmarksDetector():
         raise NotImplementedError()
 
 class FANLandmarksDetector(BaseLandmarksDetector):
-    def __init__(self, path_to_weights_file="./models/detector/FAN/2DFAN-4_keras.h5"):
+    def __init__(self, path_to_weights_file=FILE_PATH+"/FAN/2DFAN-4_keras.h5"):
         if not tf.__version__ >= '1.13':
             self.net = load_model(path_to_weights_file)
         else:

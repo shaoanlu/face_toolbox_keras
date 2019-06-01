@@ -1,12 +1,14 @@
 import numpy as np
 import cv2
+from pathlib import Path
 
 from .ELG.elg_keras import KerasELG
 
+FILE_PATH = str(Path(__file__).parent.resolve())
 NET_INPUT_SHAPE = (108, 180)
 
 class IrisDetector():
-    def __init__(self, path_elg_weights="./models/detector/ELG/elg_keras.h5"):
+    def __init__(self, path_elg_weights=FILE_PATH+"/ELG/elg_keras.h5"):
         self.elg = None
         self.detector = None
         self.path_elg_weights = path_elg_weights

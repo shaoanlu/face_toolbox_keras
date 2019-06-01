@@ -1,10 +1,13 @@
 import cv2
 import numpy as np
+from pathlib import Path
 import tensorflow as tf
 from keras import backend as K
 
 from .s3fd.s3fd_detector import S3FD
 from .landmarks_detector import FANLandmarksDetector
+
+FILE_PATH = str(Path(__file__).parent.resolve())
 
 class BaseFaceDetector():
     def __init__(self):
@@ -14,7 +17,7 @@ class BaseFaceDetector():
         raise NotImplementedError
     
 class S3FaceDetector(BaseFaceDetector):
-    def __init__(self, weights_path="./models/detector/s3fd/s3fd_keras_weights.h5"):
+    def __init__(self, weights_path=FILE_PATH+"/s3fd/s3fd_keras_weights.h5"):
         self.face_detector = S3FD(weights_path)
         
     def detect_face(self, image):
@@ -26,8 +29,8 @@ class S3FaceDetector(BaseFaceDetector):
     
 class FaceAlignmentDetector(BaseFaceDetector):
     def __init__(self, 
-                 fd_weights_path="./models/detector/s3fd/s3fd_keras_weights.h5", 
-                 lmd_weights_path="./models/detector/FAN/2DFAN-4_keras.h5",
+                 fd_weights_path=FILE_PATH+"/s3fd/s3fd_keras_weights.h5", 
+                 lmd_weights_path=FILE_PATH+"/FAN/2DFAN-4_keras.h5",
                  fd_type="s3fd"):
         self.fd_type = fd_type.lower()
         if fd_type.lower() == "s3fd":

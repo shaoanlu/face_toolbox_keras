@@ -5,10 +5,12 @@ from keras import backend as K
 import tensorflow as tf
 import numpy as np
 from scipy.spatial import distance
+from pathlib import Path
 
+FILE_PATH = str(Path(__file__).parent.resolve())
 
 class FaceVerifier():
-    def __init__(self, resolution=None, weights_path='./models/verifier/facenet/facenet_keras_weights_VGGFace2.h5', classes=512):
+    def __init__(self, resolution=None, weights_path=FILE_PATH+"/facenet/facenet_keras_weights_VGGFace2.h5", classes=512):
         self.weights_path = weights_path
         self.input_resolution = 160
         self.latent_dim = classes
