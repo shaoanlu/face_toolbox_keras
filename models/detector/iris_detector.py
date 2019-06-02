@@ -22,7 +22,7 @@ class IrisDetector():
     def set_detector(self, detector):
         self.detector = detector
         
-    def detect_iris(self, im):
+    def detect_iris(self, im, landmarks=None):
         """
         Input:
             im: RGB image
@@ -30,13 +30,14 @@ class IrisDetector():
             output_eye_landmarks: list of eye landmarks having shape (2, 18, 2) with ordering (L/R, landmarks, x/y).
         """
             
-        try:    
-            faces, landmarks = self.detector.detect_face(im, with_landmarks=True)     
-        except:
-            raise NameError("Error occured during face detection. Maybe face detector has not been set.")
+        if landmarks == None:
+            try:    
+                faces, landmarks = self.detector.detect_face(im, with_landmarks=True)     
+            except:
+                raise NameError("Error occured during face detection. Maybe face detector has not been set.")
+                
         left_eye_idx = slice(36, 42)
         right_eye_idx = slice(42, 48)
-        
         output_eye_landmarks = []
         for lm in landmarks:
             left_eye_im, left_x0y0 = self.get_eye_roi(im, lm[left_eye_idx])
@@ -55,8 +56,8 @@ class IrisDetector():
         return output_eye_landmarks
     
     @staticmethod
-    def get_eye_roi(im, lms, ratio_w=1.4):
-        def adjust_hw(hw, ratio_w=1.4):
+    def get_eye_roi(im, lms, ratio_w=1.5):
+        def adjust_hw(hw, ratio_w=1.5):
             """
             set RoI height and width to the same ratio of NET_INPUT_SHAPE
             """
