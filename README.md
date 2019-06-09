@@ -80,7 +80,7 @@ from models.verifier import face_verifier
 
 im1 = cv2.imread(PATH_TO_IMAGE1)[..., ::-1]
 im2 = cv2.imread(PATH_TO_IMAGE2)[..., ::-1]
-fv = face_verifier.FaceVerifier(extractor="facenet") # type_extractor="insightface"
+fv = face_verifier.FaceVerifier(extractor="facenet") # extractor="insightface"
 # fv.set_detector(fd) # fd = face_detector.FaceAlignmentDetector()
 result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, return_distance=True)
 ```
