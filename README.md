@@ -71,7 +71,7 @@ eye_landmarks = idet.detect_iris(im)
 
 ### 5. Face verification
 
-InceptionResNetV1 from  [davidsandberg/facenet](https://github.com/davidsandberg/facenet) and LResNet100E-IR (ArcFace@ms1m-refine-v2) from [deepinsight/insightface](https://github.com/deepinsight/insightface) are provided as face verificaiton model. Arcface model requires face alignment, which is absent in face_ttolbox_keras, for optimal performance (but we found it works fine with detection only). 
+InceptionResNetV1 from  [davidsandberg/facenet](https://github.com/davidsandberg/facenet) and LResNet100E-IR (ArcFace@ms1m-refine-v2) from [deepinsight/insightface](https://github.com/deepinsight/insightface) are provided as face verificaiton model. Arcface model requires face alignment, which is absent in this repo, for optimal performance (but we found it working fine with detection only). 
 
 To use ArcFace model, download the weights file from [here](https://drive.google.com/uc?id=1H37LER8mRRI4q_nxpS3uQz3DcGHkTrNU) and put it under `./models/verifier/insightface/`.
 
