@@ -13,6 +13,7 @@ This repository contains deep learning frameworks that we collected and ported t
 - **Face parsing:** The BiSeNet model is ported from [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch).
 - **Eye region landmarks detection:** The ELG model is ported from [swook/GazeML](https://github.com/swook/GazeML). 
 - **Face verification:** The InceptionResNetV1 model (model name: 20180402-114759) is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
+- **Face verification:** The LResNet100E-IR model is ported from [deepinsight/insightface](https://github.com/deepinsight/insightface).
 
 ## Usage
 
@@ -67,12 +68,17 @@ eye_landmarks = idet.detect_iris(im)
 ```
 
 ### 5. Face verification
+
+InceptionResNetV1 from  [davidsandberg/facenet](https://github.com/davidsandberg/facenet) and LResNet100E-IR (ArcFace@ms1m-refine-v2) from [deepinsight/insightface](https://github.com/deepinsight/insightface) are provided as face verificaiton model. Arcface model requires face alignment, which is absent in face_ttolbox_keras, for optimal performance (but we found it works fine with detection only). 
+
+To use ArcFace model, download the weights file from [here](https://drive.google.com/uc?id=1H37LER8mRRI4q_nxpS3uQz3DcGHkTrNU) and put it under `./models/verifier/insightface/`.
+
 ```python
 from models.verifier import face_verifier
 
 im1 = cv2.imread(PATH_TO_IMAGE1)[..., ::-1]
 im2 = cv2.imread(PATH_TO_IMAGE2)[..., ::-1]
-fv = face_verifier.FaceVerifier(classes=512)
+fv = face_verifier.FaceVerifier(extractor="facenet") # type_extractor="insightface"
 # fv.set_detector(fd) # fd = face_detector.FaceAlignmentDetector()
 result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, return_distance=True)
 ```
@@ -82,4 +88,4 @@ result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, retu
 - TensorFlow 1.12.0 or 1.13.1
 
 ## Acknowledgments
-We learnt a lot from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment), [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch), [swook/GazeML](https://github.com/swook/GazeML), and [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
+We learnt a lot from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment), [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch), [swook/GazeML](https://github.com/swook/GazeML), [deepinsight/insightface](https://github.com/deepinsight/insightface), and [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
