@@ -1,5 +1,5 @@
 import numpy as np
-import scipy
+from scipy import special
 from .model import s3fd_keras
 
 class S3FD():
@@ -16,7 +16,7 @@ class S3FD():
     
     def detect(self, net, img):    
         def softmax(x, axis=-1):
-            return np.exp(x - scipy.special.logsumexp(x, axis=axis, keepdims=True))
+            return np.exp(x - special.logsumexp(x, axis=axis, keepdims=True))
         img = img - np.array([104, 117, 123])
         if img.ndim == 3:
             img = img[np.newaxis, ...]
