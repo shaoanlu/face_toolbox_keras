@@ -3,8 +3,11 @@ from keras.models import Model
 from keras import backend as K
 import tensorflow as tf
 import numpy as np
+import cv2
 from scipy.spatial import distance
 from pathlib import Path
+
+from . import umeyama
 
 FILE_PATH = str(Path(__file__).parent.resolve())
 
@@ -97,10 +100,14 @@ class FaceVerifier():
         else:
             return is_same_person
     
-    def extract_embeddings(self, im, with_detection=False):
+    def extract_embeddings(self, im, with_detection=False, return_face=False):
         if with_detection:
             try:
-                faces = self.detector.detect_face(im, with_landmarks=False)
+                if self.extractor_type == "facenet":
+                    faces = self.detector.detect_face(im, with_landmarks=False)
+                elif self.extractor_type == "insightface":
+                    faces, landmarks = self.detector.detect_face(im, with_landmarks=True)
+                    landmarks = [self.detector.convert_landmarks_68_to_5(l) for l in landmarks]
             except:
                 raise NameError("Error occured duaring face detection. \
                 Please check if face detector has been set through set_detector().")
@@ -108,14 +115,38 @@ class FaceVerifier():
                 print("Multiple faces detected, only the most confident one is used for verification.")
                 most_conf_idx = np.argmax(faces, axis=0)[-1]
                 faces = faces[most_conf_idx:most_conf_idx+1]
-            x0, y0, x1, y1, _ = faces[0].astype(np.int32)
-            face = im[x0:x1, y0:y1]
+                if self.extractor_type == "insightface":
+                    landmarks = landmarks[most_conf_idx:most_conf_idx+1]
+                    
+            if self.extractor_type == "facenet":
+                x0, y0, x1, y1, _ = faces[0].astype(np.int32)
+                face = im[x0:x1, y0:y1]            
+            elif self.extractor_type == "insightface":
+                face = self.align_face(im, landmarks[0][..., ::-1], self.input_resolution)
         else:
             face = im
         
         input_array = face[np.newaxis, ...] 
         embeddings = self.net.predict([input_array])
-        return embeddings    
+        if return_face:
+            return embeddings, face
+        else:
+            return embeddings  
+    
+    @staticmethod
+    def align_face(im, src, size):
+        # Refer to:
+        # https://github.com/deepinsight/insightface/blob/master/src/common/face_preprocess.py#L46
+        dst = np.array([
+            [30.2946, 51.6963],
+            [65.5318, 51.5014],
+            [48.0252, 71.7366],
+            [33.5493, 92.3655],
+            [62.7299, 92.2041] ], dtype=np.float32 )
+        dst[:,0] += 8.0        
+        M = umeyama.umeyama(src, dst, True)[0:2]
+        warped = cv2.warpAffine(im, M, (size, size), borderValue=0.0)
+        return warped 
     
     @staticmethod
     def compute_cosine_distance(emb1, emb2):

@@ -110,7 +110,20 @@ class FaceAlignmentDetector(BaseFaceDetector):
             x, y = landmarks[i]
             image = cv2.circle(image.copy(), (int(y), int(x)), stroke, color, -1)        
         return image
-        
-            
+    
+    @staticmethod
+    def convert_landmarks_68_to_5(landmarks):
+        left_eye = np.mean(landmarks[36:42], axis=0)
+        right_eye = np.mean(landmarks[42:48], axis=0)
+        nose_tip = landmarks[30]
+        left_mouth = landmarks[48]
+        right_mouth = landmarks[54]
+        new_landmarks = np.stack([
+            left_eye, 
+            right_eye, 
+            nose_tip, 
+            left_mouth, 
+            right_mouth])
+        return new_landmarks
 
     
