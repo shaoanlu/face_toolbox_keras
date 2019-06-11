@@ -71,9 +71,7 @@ eye_landmarks = idet.detect_iris(im)
 
 ### 5. Face verification
 
-InceptionResNetV1 from  [davidsandberg/facenet](https://github.com/davidsandberg/facenet) and LResNet100E-IR (ArcFace@ms1m-refine-v2) from [deepinsight/insightface](https://github.com/deepinsight/insightface) are provided as face verificaiton model. Arcface model requires [its own face alignment preprocessing](https://github.com/deepinsight/insightface/blob/master/src/common/face_preprocess.py#L46), which is absent in this repo, for optimal performance (but we found it working fine with detection only). 
-
-To use ArcFace model, download the weights file from [here](https://drive.google.com/uc?id=1H37LER8mRRI4q_nxpS3uQz3DcGHkTrNU) and put it under `./models/verifier/insightface/`.
+InceptionResNetV1 from  [davidsandberg/facenet](https://github.com/davidsandberg/facenet) and LResNet100E-IR (ArcFace@ms1m-refine-v2) from [deepinsight/insightface](https://github.com/deepinsight/insightface) are provided as face verificaiton model. To use ArcFace model, download the weights file from [here](https://drive.google.com/uc?id=1H37LER8mRRI4q_nxpS3uQz3DcGHkTrNU) and put it under `./models/verifier/insightface/`.
 
 ```python
 from models.verifier import face_verifier
@@ -84,6 +82,9 @@ fv = face_verifier.FaceVerifier(extractor="facenet") # extractor="insightface"
 # fv.set_detector(fd) # fd = face_detector.FaceAlignmentDetector()
 result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, return_distance=True)
 ```
+
+## Known issues
+It works fine on Colab at this point (2019/06/11) but for certain Keras/TensorFlow version, there are errors loading `2DFAN-1_keras.h5` or `2DFAN-2_keras.h5`.
 
 ## Requirements
 - Keras 2.2.4
