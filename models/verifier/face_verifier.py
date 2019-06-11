@@ -29,7 +29,7 @@ class FaceVerifier():
     def build_networks(self, classes=512):
         if self.extractor_type == "facenet":
             """
-            FaceNet().net expects input images that have pixels normalized to [-1, +1].
+            InceptionResNetV1 expects inputs that have range [0, 255].
             """
             from .facenet.inception_resnet_v1 import InceptionResNetV1
             input_tensor = Input((None, None, 3))
@@ -42,7 +42,7 @@ class FaceVerifier():
             return Model(input_tensor, output_tensor)
         elif self.extractor_type == "insightface":
             """
-            LResNet100E-IR expects input images that have in range [0, 255].
+            LResNet100E-IR expects input images that have range [0, 255].
             """
             from .insightface.lresnet100e_ir import LResNet100E_IR
             input_tensor = Input((None, None, 3))
