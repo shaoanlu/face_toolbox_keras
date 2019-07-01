@@ -15,6 +15,8 @@ This repository contains deep learning frameworks that we collected and ported t
 - **Face verification:** The InceptionResNetV1 model (model name: 20180402-114759) is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
 - **Face verification:** The LResNet100E-IR model is ported from [deepinsight/insightface](https://github.com/deepinsight/insightface).
 
+###### Each module follows the license of their source repo.
+
 ## Usage
 
  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaoanlu/face-toolbox-keras/blob/master/demo.ipynb)
