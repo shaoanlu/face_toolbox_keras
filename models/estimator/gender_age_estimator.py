@@ -49,7 +49,8 @@ class GenderAgeEstimator():
                     
             face = self.align_face(im, landmarks[0][..., ::-1], self.input_resolution)
         else:
-            face = im
+            face = im            
+            face = cv2.resize(face, (self.input_resolution, self.input_resolution))
         
         input_array = face[np.newaxis, ...] 
         pred = self.net.predict([input_array])
