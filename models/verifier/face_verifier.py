@@ -7,9 +7,13 @@ import cv2
 from scipy.spatial import distance
 from pathlib import Path
 
-from . import umeyama
+#from . import umeyama
 
-FILE_PATH = str(Path(__file__).parent.resolve())
+FILE_PATH = Path(__file__).parent.resolve()
+
+import sys
+sys.path.append(FILE_PATH.parent.parent.parent)
+from utils.umeyama import umeyama
 
 class FaceVerifier():
     def __init__(self, extractor="facenet", classes=512):
@@ -17,10 +21,10 @@ class FaceVerifier():
         self.latent_dim = classes
         if extractor == "facenet":
             self.input_resolution = 160
-            self.weights_path = FILE_PATH+"/facenet/facenet_keras_weights_VGGFace2.h5"
+            self.weights_path = str(FILE_PATH)+"/facenet/facenet_keras_weights_VGGFace2.h5"
         elif extractor == "insightface":
             self.input_resolution = 112
-            self.weights_path = FILE_PATH+"/insightface/lresnet100e_ir_keras.h5"
+            self.weights_path = str(FILE_PATH)+"/insightface/lresnet100e_ir_keras.h5"
         else:
             raise ValueError(f"Received an unknown extractor: {str(extractor)}.")
         
@@ -144,7 +148,7 @@ class FaceVerifier():
             [33.5493, 92.3655],
             [62.7299, 92.2041] ], dtype=np.float32 )
         dst[:,0] += 8.0        
-        M = umeyama.umeyama(src, dst, True)[0:2]
+        M = umeyama(src, dst, True)[0:2]
         warped = cv2.warpAffine(im, M, (size, size), borderValue=0.0)
         return warped 
     
