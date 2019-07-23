@@ -14,6 +14,7 @@ This repository contains deep learning frameworks that we collected and ported t
 - **Eye region landmarks detection:** The ELG model is ported from [swook/GazeML](https://github.com/swook/GazeML). 
 - **Face verification:** The InceptionResNetV1 model (model name: 20180402-114759) is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
 - **Face verification:** The LResNet100E-IR model is ported from [deepinsight/insightface](https://github.com/deepinsight/insightface).
+- **Gender and age estimation:** The MobileNet model is ported from [deepinsight/insightface](https://github.com/deepinsight/insightface).
 
 ###### *Each module follows the license of their source repo.
 
@@ -85,8 +86,18 @@ fv = face_verifier.FaceVerifier(extractor="facenet") # extractor="insightface"
 result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, return_distance=True)
 ```
 
+### 6. Gender and age estimation
+```python
+from models.estimator import gender_age_estimator
+
+im = cv2.imread(PATH_TO_IMAGE)[..., ::-1]
+gae = gender_age_estimator.GenderAgeEstimator()
+gae.set_detector(fd) # fd = face_detector.FaceAlignmentDetector()
+gender, age = gae.predict_gender_age(im, with_detection=True)
+```
+
 ## Known issues
-It works fine on Colab at this point (2019/06/11) but for certain Keras/TensorFlow version, there are errors loading `2DFAN-1_keras.h5` or `2DFAN-2_keras.h5`.
+It works fine on Colab at this point (2019/06/11) but for certain Keras/TensorFlow version, it throws errors loading `2DFAN-1_keras.h5` or `2DFAN-2_keras.h5`.
 
 ## Requirements
 - Keras 2.2.4
