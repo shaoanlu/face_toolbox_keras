@@ -2,11 +2,9 @@ import numpy as np
 import cv2
 from pathlib import Path
 
-FILE_PATH = Path(__file__).parent.resolve()
-
-import sys
-sys.path.append(FILE_PATH.parent.parent.parent)
 from utils.umeyama import umeyama
+
+FILE_PATH = Path(__file__).parent.resolve()
 
 class GenderAgeEstimator():
     def __init__(self, model_type="insightface"):

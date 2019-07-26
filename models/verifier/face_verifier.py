@@ -8,12 +8,9 @@ from scipy.spatial import distance
 from pathlib import Path
 
 #from . import umeyama
+from utils.umeyama import umeyama
 
 FILE_PATH = Path(__file__).parent.resolve()
-
-import sys
-sys.path.append(FILE_PATH.parent.parent.parent)
-from utils.umeyama import umeyama
 
 class FaceVerifier():
     def __init__(self, extractor="facenet", classes=512):
