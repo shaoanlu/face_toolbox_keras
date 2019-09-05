@@ -20,9 +20,9 @@ This repository contains deep learning frameworks that we collected and ported t
 
 ## Usage
 
- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaoanlu/face-toolbox-keras/blob/master/demo.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaoanlu/face-toolbox-keras/blob/master/demo.ipynb) (Please run `pip install keras==2.2.4` before initializaing models.)
  
- This demo requires a GPU instance.
+This demo requires a GPU instance.
 
 ### 1. Face detection
 ```python
