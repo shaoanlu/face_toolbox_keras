@@ -8,23 +8,30 @@ A collection of deep learning frameworks ported to Keras for face detection, fac
 
 This repository contains deep learning frameworks that we collected and ported to Keras. We wrapped those models into separate modules that aim to provide their functionality to users within 3 lines of code.
 
-- **Face detection:** The S3FD model is ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment).
+- **Face detection:** The S3FD model is ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment). The MTCNN model is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
 - **Face landmarks detection:** The 2DFAN-4, 2DFAN-2, and 2DFAN-1 models are ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment).
 - **Face parsing:** The BiSeNet model is ported from [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch).
 - **Eye region landmarks detection:** The ELG model is ported from [swook/GazeML](https://github.com/swook/GazeML). 
-- **Face verification:** The InceptionResNetV1 model (model name: 20180402-114759) is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
-- **Face verification:** The LResNet100E-IR model is ported from [deepinsight/insightface](https://github.com/deepinsight/insightface).
+- **Face verification:** The InceptionResNetV1 model (model name: 20180402-114759) is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet). The LResNet100E-IR model is ported from [deepinsight/insightface](https://github.com/deepinsight/insightface). The IR50 model is ported from [ZhaoJ9014/face.evoLVe.PyTorch](https://github.com/ZhaoJ9014/face.evoLVe.PyTorch).
 - **Gender and age estimation:** The MobileNet model is ported from [deepinsight/insightface](https://github.com/deepinsight/insightface).
 
-###### *Each module follows the license of their source repo.
+##### *Each module follows the license of their source repo. Notice that some models were trained on dataset with non-commercial license.
 
 ## Usage
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/shaoanlu/face-toolbox-keras/blob/master/demo.ipynb) (Please run `pip install keras==2.2.4` before initializaing models.)
  
-This demo requires a GPU instance.
+This colab demo requires a GPU instance. It demonstrates all face analysis functionalities above.
 
 ### 1. Face detection
+`models.detector.face_detector.FaceAlignmentDetector(fd_weights_path=..., lmd_weights_path=..., fd_type="s3fd")`
+
+**Arguments**
+- `fd_weights_path`: A string. Path to weights file of the face detector model.
+- `lmd_weights_path`: A string. Path to weights file of the landmarks detector model.
+- `fd_type`: A string. Face detector backbone model of either `s3fd` or `mtcnn`.
+
+**Example**
 ```python
 from models.detector import face_detector
 
@@ -41,6 +48,7 @@ The default model is 2DFAN-4. Lite models of 2DFAN-1 and 2DFAN-2 are also provid
 |:---:|:-------:|:-------:|:-------:|
 | K80 | 74.3ms  | 92.2ms  | 133ms   |
 
+**Example**
 ```python
 from models.detector import face_detector
 
@@ -50,6 +58,12 @@ bboxes, landmarks = fd.detect_face(im, with_landmarks=True)
 ```
 
 ### 3. Face parsing
+`models.parser.face_parser.FaceParser(path_bisenet_weights=...)`
+
+**Arguments**
+- `path_bisenet_weights`: A string. Path to weights file of the model.
+
+**Example**
 ```python
 from models.parser import face_parser
 
@@ -60,9 +74,11 @@ parsing_map = fp.parse_face(im, bounding_box=None, with_detection=False)
 ```
 
 ### 4. Eye region landmarks detection
+`models.detector.iris_detector.IrisDetector()`
 
 Faster face detection using MTCNN can be found in [this](https://github.com/shaoanlu/GazeML-keras) repo.
 
+**Example**
 ```python
 from models.detector import iris_detector
 
@@ -73,20 +89,32 @@ eye_landmarks = idet.detect_iris(im)
 ```
 
 ### 5. Face verification
+`models.verifier.face_verifier.FaceVerifier(extractor="facenet", classes=512)`
 
-InceptionResNetV1 from  [davidsandberg/facenet](https://github.com/davidsandberg/facenet) and LResNet100E-IR (ArcFace@ms1m-refine-v2) from [deepinsight/insightface](https://github.com/deepinsight/insightface) are provided as face verificaiton model. To use ArcFace model, download the weights file from [here](https://drive.google.com/uc?id=1H37LER8mRRI4q_nxpS3uQz3DcGHkTrNU) and put it under `./models/verifier/insightface/`.
+**Argument**
 
+- `extractor`: A string, one of `facenet`, `insightface`, `ir50_ms1m`, or `ir50_asia`.
+- `classes`: An integer. Dimension of output embeddings.
+
+**Example**
 ```python
 from models.verifier import face_verifier
 
 im1 = cv2.imread(PATH_TO_IMAGE1)[..., ::-1]
 im2 = cv2.imread(PATH_TO_IMAGE2)[..., ::-1]
-fv = face_verifier.FaceVerifier(extractor="facenet") # extractor="insightface"
+fv = face_verifier.FaceVerifier(extractor="facenet")
 # fv.set_detector(fd) # fd = face_detector.FaceAlignmentDetector()
-result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, return_distance=True)
+result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, with_alignment=False, return_distance=True)
 ```
 
 ### 6. Gender and age estimation
+
+`models.estimator.gender_age_estimator.GenderAgeEstimator(model_type="insightface")`
+
+**Arguments**
+- `model_type`: A string, only `insightface` is supported now.
+
+**Example**
 ```python
 from models.estimator import gender_age_estimator
 
@@ -96,6 +124,11 @@ gae.set_detector(fd) # fd = face_detector.FaceAlignmentDetector()
 gender, age = gae.predict_gender_age(im, with_detection=True)
 ```
 
+## Ported model weights
+- [insightface model](https://drive.google.com/uc?id=1H37LER8mRRI4q_nxpS3uQz3DcGHkTrNU), this file should be put in `./models/verifier/insightface/`.
+- [IR50-MS-Celeb-1M](https://drive.google.com/uc?id=18MyyXQIwhR5I6gzipYMiJ9ywgvFWQMvI), this file should be put in `./models/verifier/face_evoLVe_ir50/`.
+- [IR50-Asia-face](https://drive.google.com/uc?id=1P_eQHU8bNJEsB6hHt_fnltOwQVKIfhiX), this file should be put in `./models/verifier/face_evoLVe_ir50/`.
+
 ## Known issues
 It works fine on Colab at this point (2019/06/11) but for certain Keras/TensorFlow version, it throws errors loading `2DFAN-1_keras.h5` or `2DFAN-2_keras.h5`.
 
@@ -104,4 +137,4 @@ It works fine on Colab at this point (2019/06/11) but for certain Keras/TensorFl
 - TensorFlow 1.12.0 or 1.13.1
 
 ## Acknowledgments
-We learnt a lot from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment), [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch), [swook/GazeML](https://github.com/swook/GazeML), [deepinsight/insightface](https://github.com/deepinsight/insightface), and [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
+We learnt a lot from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment), [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch), [swook/GazeML](https://github.com/swook/GazeML), [deepinsight/insightface](https://github.com/deepinsight/insightface), [davidsandberg/facenet](https://github.com/davidsandberg/facenet), and [ZhaoJ9014/face.evoLVe.PyTorch](https://github.com/ZhaoJ9014/face.evoLVe.PyTorch).
