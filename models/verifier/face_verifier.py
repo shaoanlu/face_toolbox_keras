@@ -153,4 +153,3 @@ class FaceVerifier():
     def compute_cosine_distance(emb1, emb2):
         return distance.cosine(emb1, emb2)
         
-        
