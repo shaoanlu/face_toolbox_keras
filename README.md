@@ -24,7 +24,9 @@ This repository contains deep learning frameworks that we collected and ported t
 This colab demo requires a GPU instance. It demonstrates all face analysis functionalities above.
 
 ### 1. Face detection
-`models.detector.face_detector.FaceAlignmentDetector(fd_weights_path=..., lmd_weights_path=..., fd_type="s3fd")`
+```python
+models.detector.face_detector.FaceAlignmentDetector(fd_weights_path=..., lmd_weights_path=..., fd_type="s3fd")
+```
 
 **Arguments**
 - `fd_weights_path`: A string. Path to weights file of the face detector model.
@@ -58,7 +60,9 @@ bboxes, landmarks = fd.detect_face(im, with_landmarks=True)
 ```
 
 ### 3. Face parsing
-`models.parser.face_parser.FaceParser(path_bisenet_weights=...)`
+```python
+models.parser.face_parser.FaceParser(path_bisenet_weights=...)
+```
 
 **Arguments**
 - `path_bisenet_weights`: A string. Path to weights file of the model.
@@ -74,7 +78,9 @@ parsing_map = fp.parse_face(im, bounding_box=None, with_detection=False)
 ```
 
 ### 4. Eye region landmarks detection
-`models.detector.iris_detector.IrisDetector()`
+```python
+models.detector.iris_detector.IrisDetector()
+```
 
 Faster face detection using MTCNN can be found in [this](https://github.com/shaoanlu/GazeML-keras) repo.
 
@@ -89,7 +95,9 @@ eye_landmarks = idet.detect_iris(im)
 ```
 
 ### 5. Face verification
-`models.verifier.face_verifier.FaceVerifier(extractor="facenet", classes=512)`
+```python
+models.verifier.face_verifier.FaceVerifier(extractor="facenet", classes=512)
+```
 
 **Argument**
 
@@ -109,7 +117,9 @@ result, distance = fv.verify(im1, im2, threshold=0.5, with_detection=False, with
 
 ### 6. Gender and age estimation
 
-`models.estimator.gender_age_estimator.GenderAgeEstimator(model_type="insightface")`
+```python
+models.estimator.gender_age_estimator.GenderAgeEstimator(model_type="insightface")
+```
 
 **Arguments**
 - `model_type`: A string, only `insightface` is supported now.
