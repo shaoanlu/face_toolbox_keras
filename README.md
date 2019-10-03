@@ -136,8 +136,8 @@ gender, age = gae.predict_gender_age(im, with_detection=True)
 
 ## Ported model weights
 - [insightface model](https://drive.google.com/uc?id=1H37LER8mRRI4q_nxpS3uQz3DcGHkTrNU), this file should be put in `./models/verifier/insightface/`.
-- [IR50-MS-Celeb-1M](https://drive.google.com/uc?id=18MyyXQIwhR5I6gzipYMiJ9ywgvFWQMvI), this file should be put in `./models/verifier/face_evoLVe_ir50/`.
-- [IR50-Asia-face](https://drive.google.com/uc?id=1P_eQHU8bNJEsB6hHt_fnltOwQVKIfhiX), this file should be put in `./models/verifier/face_evoLVe_ir50/`.
+- [IR50-MS-Celeb-1M model](https://drive.google.com/uc?id=18MyyXQIwhR5I6gzipYMiJ9ywgvFWQMvI), this file should be put in `./models/verifier/face_evoLVe_ir50/`.
+- [IR50-Asia-face model](https://drive.google.com/uc?id=1P_eQHU8bNJEsB6hHt_fnltOwQVKIfhiX), this file should be put in `./models/verifier/face_evoLVe_ir50/`.
 
 ## Known issues
 It works fine on Colab at this point (2019/06/11) but for certain Keras/TensorFlow version, it throws errors loading `2DFAN-1_keras.h5` or `2DFAN-2_keras.h5`.
