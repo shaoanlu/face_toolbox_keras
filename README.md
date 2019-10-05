@@ -8,12 +8,21 @@ A collection of deep learning frameworks ported to Keras for face detection, fac
 
 This repository contains deep learning frameworks that we collected and ported to Keras. We wrapped those models into separate modules that aim to provide their functionality to users within 3 lines of code.
 
-- **Face detection:** The S3FD model is ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment). The MTCNN model is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
-- **Face landmarks detection:** The 2DFAN-4, 2DFAN-2, and 2DFAN-1 models are ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment).
-- **Face parsing:** The BiSeNet model is ported from [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch).
-- **Eye region landmarks detection:** The ELG model is ported from [swook/GazeML](https://github.com/swook/GazeML). 
-- **Face verification:** The InceptionResNetV1 model (model name: 20180402-114759) is ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet). The LResNet100E-IR model is ported from [deepinsight/insightface](https://github.com/deepinsight/insightface). The IR50 model is ported from [ZhaoJ9014/face.evoLVe.PyTorch](https://github.com/ZhaoJ9014/face.evoLVe.PyTorch).
-- **Gender and age estimation:** The MobileNet model is ported from [deepinsight/insightface](https://github.com/deepinsight/insightface).
+- **Face detection:** 
+  - S3FD model ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment).
+  - MTCNN model ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet).
+- **Face landmarks detection:** 
+  - 2DFAN-4, 2DFAN-2, and 2DFAN-1 models ported from [1adrianb/face-alignment](https://github.com/1adrianb/face-alignment).
+- **Face parsing:** 
+  - BiSeNet model ported from [zllrunning/face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch).
+- **Eye region landmarks detection:** 
+  - ELG model is ported from [swook/GazeML](https://github.com/swook/GazeML). 
+- **Face verification:** 
+  - InceptionResNetV1 model (model name: 20180402-114759) ported from [davidsandberg/facenet](https://github.com/davidsandberg/facenet). 
+  - LResNet100E-IR model ported from [deepinsight/insightface](https://github.com/deepinsight/insightface).
+  - IR50 model ported from [ZhaoJ9014/face.evoLVe.PyTorch](https://github.com/ZhaoJ9014/face.evoLVe.PyTorch).
+- **Gender and age estimation:** 
+  - MobileNet model ported from [deepinsight/insightface](https://github.com/deepinsight/insightface).
 
 ##### *Each module follows the license of their source repo. Notice that some models were trained on dataset with non-commercial license.
 
