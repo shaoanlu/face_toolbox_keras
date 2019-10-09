@@ -3,7 +3,7 @@ import numpy as np
 import tensorflow as tf
 from keras import backend as K
 
-from models.detector.mtcnn import mtcnn_detect_face
+from . import mtcnn_detect_face
 
 class MTCNN():
     """
