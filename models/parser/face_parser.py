@@ -38,19 +38,19 @@ class FaceParser():
                 bboxes = self.detector.fd.detect_face(im)
                 faces = []
                 for bbox in bboxes:
-                    y0, x0, y1, x1, _ = bbox
-                    x0, y0 = np.maximum(x0, 0), np.maximum(y0, 0)
-                    x1, y1 = np.minimum(x1, orig_h), np.minimum(y1, orig_w)
-                    x0, y0, x1, y1 = map(np.int32, [x0, y0, x1, y1])
-                    faces.append(im[x0:x1, y0:y1, :])
+                    left, top, right, bottom, _ = bbox
+                    top, left = np.maximum(top, 0), np.maximum(left, 0)
+                    bottom, right = np.minimum(bottom, orig_h), np.minimum(right, orig_w)
+                    top, left, bottom, right = map(np.int32, [top, left, bottom, right])
+                    faces.append(im[top:bottom, left:right, :])
             else:
                 faces = [im]
         else:
-            x0, y0, x1, y1 = bounding_box
-            x0, y0 = np.maximum(x0, 0), np.maximum(y0, 0)
-            x1, y1 = np.minimum(x1, orig_h), np.minimum(y1, orig_w)
-            x0, y0, x1, y1 = map(np.int32, [x0, y0, x1, y1])
-            faces = [im[x0:x1, y0:y1, :]]
+            left, top, right, bottom = bounding_box
+            top, left = np.maximum(top, 0), np.maximum(left, 0)
+            bottom, right = np.minimum(bottom, orig_h), np.minimum(right, orig_w)
+            top, left, bottom, right = map(np.int32, [top, left, bottom, right])
+            faces = [im[top:bottom, left:right, :]]
         
         maps = []
         for face in faces:
@@ -74,4 +74,4 @@ class FaceParser():
     @staticmethod
     def normalize_input(x, mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)):
         # x should be RGB with range [0, 255]
-        return ((x / 255) - mean)  / std
+        return ((x / 255) - mean) / std
