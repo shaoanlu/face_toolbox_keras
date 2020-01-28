@@ -13,6 +13,16 @@ class S3FD():
         bboxlist = bboxlist[keep, :]
         bboxlist = [x for x in bboxlist if x[-1] > 0.5]
         return bboxlist
+    # batch prediction
+    def detect_face_prl(self, image_prl):
+        bboxlist_prl = self.detect_prl(self.net, image_prl)
+        for i, bboxlist in enumerate(bboxlist_prl):
+            keep = self.nms(bboxlist, 0.3)
+            bboxlist = bboxlist[keep, :]
+            bboxlist = [x for x in bboxlist if x[-1] > 0.5]
+            bboxlist_prl[i] = bboxlist            
+        return bboxlist_prl        
+
     
     def detect(self, net, img):    
         def softmax(x, axis=-1):
@@ -49,6 +59,47 @@ class S3FD():
         if 0 == len(bboxlist):
             bboxlist = np.zeros((1, 5))            
         return bboxlist
+    # batch prediction
+    def detect_prl(self, net, img_prl):
+        def softmax(x, axis=-1):
+            return np.exp(x - special.logsumexp(x, axis=axis, keepdims=True))
+        img_prl = img_prl - np.array([104, 117, 123])
+
+        BB, HH, WW, CC = img_prl.shape
+        olist_prl = net.predict_on_batch(img_prl) # output a list of 12 predicitons in different resolution
+        
+        ret = []
+       
+        for idx in range(len(img_prl)):
+            olist = []
+            for i in range(len(olist_prl)):
+                olist.append(olist_prl[i][idx,...][np.newaxis,...])
+            #print(olist[0].shape)
+            bboxlist = []
+            for i in range(len(olist) // 2):
+                olist[i * 2] = softmax(olist[i * 2], axis=-1)
+            olist = [oelem for oelem in olist]
+            for i in range(len(olist) // 2):
+                ocls, oreg = olist[i * 2], olist[i * 2 + 1]
+                
+                FB, FH, FW, FC = ocls.shape  # feature map size
+                stride = 2**(i + 2)    # 4,8,16,32,64,128
+                anchor = stride * 4
+                poss = zip(*np.where(ocls[:, :, :, 1] > 0.05))
+                for Iindex, hindex, windex in poss:
+                    axc, ayc = stride / 2 + windex * stride, stride / 2 + hindex * stride
+                    score = ocls[0:1, hindex, windex, 1]
+                    loc = oreg[0:1, hindex, windex, :]
+                    priors = np.array([[axc / 1.0, ayc / 1.0, stride * 4 / 1.0, stride * 4 / 1.0]])
+                    variances = [0.1, 0.2]
+                    box = self.decode(loc, priors, variances)
+                    x1, y1, x2, y2 = box[0] * 1.0
+                    bboxlist.append([x1, y1, x2, y2, score])
+            bboxlist = np.array(bboxlist)
+            if 0 == len(bboxlist):
+                bboxlist = np.zeros((1, 5))
+            ret.append(bboxlist)         
+        return ret        
 
     @staticmethod
     def decode(loc, priors, variances):

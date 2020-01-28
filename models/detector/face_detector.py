@@ -35,6 +35,10 @@ class S3FaceDetector(BaseFaceDetector):
     def detect_face(self, image):
         # Output bbox coordinate has ordering (y0, x0, y1, x1)
         return self.face_detector.detect_face(image)
+
+    def detect_face_prl(self, image):
+        # Output bbox coordinate has ordering (y0, x0, y1, x1)
+        return self.face_detector.detect_face_prl(image)
         
     def batch_detect_face(self, image):
         raise NotImplementedError
@@ -86,6 +90,66 @@ class FaceAlignmentDetector(BaseFaceDetector):
         else:
             bbox_list = self.preprocess_s3fd_bbox(bbox_list)
             return bbox_list
+
+    def detect_face_prl(self, image_prl, with_landmarks=True):
+        '''
+        get bounding boxes and landmarks (modified from face_detector.py)
+        Parameters
+        ----------
+        image_prl : list of cv2 images
+            list of input images. 
+            preferred length: 32, dimention 500*500*3, BGR image
+        s3fd: face detector
+        with_landmarks : boolean, optional
+            For now it's always True.
+        Returns
+        -------
+        list of tuple(bounding box, landmark)-the most confident face 
+                OR None-no face is detected.
+        '''
+        
+        # get bounding boxes on batch
+        # Returns: list (#images)*1, nparray (5,)    
+        bbox_list_prl = self.fd.detect_face_prl(image_prl)
+            
+        # get the most confident face when there are several faces    
+        for i, bboxes in enumerate(bbox_list_prl):
+            if len(bboxes) > 1:
+                #print("Multiple faces detected. Only the most confident face will be processed.")
+                most_conf_idx = sorted(
+                    range(len(bboxes)), 
+                    key=lambda idx: bboxes[idx][-1], 
+                    reverse=True)[0]
+                bbox_list_prl[i] = [bboxes[most_conf_idx]]
+            
+        # prepare image for batch prediction of landmarks
+        images = []
+        bboxes = []
+        for i in range(len(image_prl)):
+            if len(bbox_list_prl[i]) > 0:
+                images.append(image_prl[i])
+                bboxes.append(bbox_list_prl[i][0])
+        
+        # get landmarks from detected faces
+        # Returns: (#images) list, tuple (2,)
+        res = self.lmd.detect_landmarks_prl(images, bboxes)
+
+        # post-processing for bounding boxes and landmarks 
+        ret = []
+        j = 0    
+        for i in range(len(image_prl)):
+            if len(bbox_list_prl[i]) > 0:
+                pnts = res[j]
+                landmark = np.array(pnts[-1])
+                landmark = self.post_process_landmarks(landmark) # (68,2) nparray
+                bbox_list = self.preprocess_s3fd_bbox(bbox_list_prl[i])[0]
+                ret.append((bbox_list, landmark))
+                j += 1
+            else:
+                ret.append(None)    
+        return ret
+
+        
     
     def batch_detect_face(self, images, **kwargs):
         raise NotImplementedError

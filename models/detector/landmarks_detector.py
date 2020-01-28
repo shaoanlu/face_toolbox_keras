@@ -32,6 +32,26 @@ class FANLandmarksDetector(BaseLandmarksDetector):
         pnts, pnts_orig = self._get_preds_fromhm(pred[-1], center, scale)
         return pnts, pnts_orig
     
+    def detect_landmarks_prl(self, image_prl, bounding_box_prl):
+        N = len(image_prl)
+        img_prl = []
+        res = []
+        for i in range(N):
+            image = image_prl[i]
+            bounding_box = bounding_box_prl[i]
+            prep_img, center, scale = self._preprocessing_FAN(image, detect=False, face_detector=None, bbox=bounding_box)
+            img_prl.append(prep_img)
+            res.append((center, scale))
+        pred_prl = self.net.predict_on_batch(np.array(img_prl))
+        pred_prl = np.array(pred_prl)
+        ret = []
+        for i in range(N):
+            pred = pred_prl[:,i:i+1,:,:]
+            center, scale = res[i]
+            pnts, pnts_orig = self._get_preds_fromhm(pred[-1], center, scale)
+            ret.append((pnts, pnts_orig))
+        return ret        
+    
     def _preprocessing_FAN(self, img, detect=False, face_detector=None, bbox=None):
         """
         Preprocess single RGB input image to proper format as following:
